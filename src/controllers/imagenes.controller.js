@@ -12,7 +12,7 @@ export const getImages = async (req, res) => {
 
 export const createImagen = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, casa_id } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ error: "No image uploaded" });
@@ -28,13 +28,14 @@ export const createImagen = async (req, res) => {
 
     const [dbResult] = await db.query(
       "INSERT INTO imagenes (url, title, casa_id) VALUES (?, ?, ?)",
-      [url, title],
+      [url, title, casa_id || 1],
     );
 
     res.json({
       id: dbResult.insertId,
       url,
       title,
+      casa_id: casa_id || 1,
     });
   } catch (error) {
     res.status(500).json({ error: "Upload error" });

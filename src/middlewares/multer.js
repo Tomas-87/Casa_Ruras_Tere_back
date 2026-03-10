@@ -1,6 +1,6 @@
 import multer from "multer";
 
-//filtro para subir solo imagens
+// filtro para subir solo imagenes
 const fileFilter = (req, file, cb) => {
   const types = ["image/jpeg", "image/png", "image/webp"];
 
@@ -13,6 +13,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: multer.memoryStorage(),
+  fileFilter,
   limits: {
     fileSize: 5 * 1024 * 1024,
   },

@@ -16,3 +16,17 @@ export default async function getPriceNow(req, res) {
     res.status(500).json({ error: "Database error" });
   }
 }
+
+export const getTemporadas = async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT id, nombre, fecha_inicio, fecha_fin, precio
+      FROM temporadas
+      ORDER BY fecha_inicio ASC
+    `);
+
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: "Database error" });
+  }
+};

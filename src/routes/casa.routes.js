@@ -1,16 +1,17 @@
 import { Router } from "express";
 import { getCasa } from "../controllers/casa.controller.js";
 import { getImages, createImagen } from "../controllers/imagenes.controller.js";
-import { getPrecioActual } from "../controllers/precios.controller.js";
-import upload from "../middlewares/upload.js";
+import getPriceNow, {
+  getTemporadas,
+} from "../controllers/precios.controller.js";
+import upload from "../middlewares/multer.js";
 
 const router = Router();
 
 router.get("/", getCasa);
-
 router.get("/imagenes", getImages);
 router.post("/imagenes", upload.single("image"), createImagen);
-
-router.get("/precio", getPrecioActual);
+router.get("/precio", getPriceNow);
+router.get("/temporadas", getTemporadas);
 
 export default router;
