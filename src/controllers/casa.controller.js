@@ -1,56 +1,51 @@
-import db from "../db/connection.js";
+import Casa from "../models/Casa.js";
 
 export const getCasa = async (req, res) => {
   try {
-    const [casas] = await db.query(`
-      SELECT 
-        id,
-        nombre,
-        descripcion,
-        precio,
-        capacidad,
-        telefono,
-        estancia_minima
-      FROM casa
-      LIMIT 1
-    `);
+    const casa = await Casa.findOne().lean();
 
-    if (casas.length === 0) {
+    if (!casa) {
       return res.status(404).json({ error: "Casa no encontrada" });
     }
 
-    const casa = casas[0];
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
 
-    const [imagenes] = await db.query(
-      `
-      SELECT id, url, title
-      FROM imagenes
-      WHERE casa_id = ?
-    `,
-      [casa.id],
+    const temporadasOrdenadas = [...(casa.temporadas || [])].sort(
+      (a, b) => new Date(a.fecha_inicio) - new Date(b.fecha_inicio),
     );
 
-    const [precios] = await db.query(`
-      SELECT nombre, fecha_inicio, fecha_fin, precio
-      FROM temporadas
-      WHERE CURDATE() BETWEEN fecha_inicio AND fecha_fin
-      LIMIT 1
-    `);
+    const precioActual =
+      temporadasOrdenadas.find((t) => {
+        const inicio = new Date(t.fecha_inicio);
+        const fin = new Date(t.fecha_fin);
+        inicio.setHours(0, 0, 0, 0);
+        fin.setHours(23, 59, 59, 999);
+        return hoy >= inicio && hoy <= fin;
+      }) || null;
 
-    const [temporadas] = await db.query(`
-      SELECT id, nombre, fecha_inicio, fecha_fin, precio
-      FROM temporadas
-      ORDER BY fecha_inicio ASC
-    `);
-
-    const precioActual = precios.length > 0 ? precios[0] : null;
+    const {
+      nombre,
+      descripcion,
+      precio,
+      capacidad,
+      telefono,
+      estancia_minima,
+      imagenes = [],
+    } = casa;
 
     res.json({
-      ...casa,
-      imagenes,
-      temporadas,
+      id: casa._id.toString(),
+      nombre: nombre,
+      descripcion: descripcion,
+      precio: precio,
+      capacidad: capacidad,
+      telefono: telefono,
+      estancia_minima: estancia_minima,
+      imagenes: imagenes || [],
+      temporadas: temporadasOrdenadas,
       precioActual,
-      precioMostrado: precioActual ? precioActual.precio : casa.precio,
+      precioMostrado: precioActual ? precioActual.precio : precio,
     });
   } catch (error) {
     res.status(500).json({ error: "Database error" });

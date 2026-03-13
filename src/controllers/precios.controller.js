@@ -1,32 +1,49 @@
-import db from "../db/connection.js";
+import Casa from "../models/Casa.js";
 
-export default async function getPriceNow(req, res) {
+const getPriceNow = async (req, res) => {
   try {
-    const [rows] = await db.query(`
-            SELECT precio
-            FROM temporadas
-            WHERE CURDATE() BETWEEN fecha_inicio AND fecha_fin LIMIT 1
-            `);
+    const casa = await Casa.findOne().lean();
 
-    if (rows.length === 0) {
-      return res.status(404).json({ error: "No price found" });
+    if (!casa) {
+      return res.status(404).json({ error: "Casa no encontrada" });
     }
-    res.json(rows[0]);
-  } catch (error) {
-    res.status(500).json({ error: "Database error" });
-  }
-}
 
-export const getTemporadas = async (req, res) => {
-  try {
-    const [rows] = await db.query(`
-      SELECT id, nombre, fecha_inicio, fecha_fin, precio
-      FROM temporadas
-      ORDER BY fecha_inicio ASC
-    `);
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
 
-    res.json(rows);
+    const precioActual =
+      (casa.temporadas || []).find((t) => {
+        const inicio = new Date(t.fecha_inicio);
+        const fin = new Date(t.fecha_fin);
+
+        inicio.setHours(0, 0, 0, 0);
+        fin.setHours(23, 59, 59, 999);
+
+        return hoy >= inicio && hoy <= fin;
+      }) || null;
+
+    res.json(precioActual);
   } catch (error) {
     res.status(500).json({ error: "Database error" });
   }
 };
+
+export const getTemporadas = async (req, res) => {
+  try {
+    const casa = await Casa.findOne().lean();
+
+    if (!casa) {
+      return res.status(404).json({ error: "Casa no encontrada" });
+    }
+
+    const temporadas = [...(casa.temporadas || [])].sort(
+      (a, b) => new Date(a.fecha_inicio) - new Date(b.fecha_inicio),
+    );
+
+    res.json(temporadas);
+  } catch (error) {
+    res.status(500).json({ error: "Database error" });
+  }
+};
+
+export default getPriceNow;

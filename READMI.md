@@ -6,7 +6,7 @@
 
 4. creamos el Schema y las tablas en la bbdd usare MySQL Workbench
 
-5. Instalar mysql2 en el proyecto npm i mysql2
+5. Instalar mongoose en el proyecto npm i mongoose
 
 6. crear conexion con la base de datos
 
@@ -20,6 +20,8 @@ crear la configuaracion a cloudinary en config y crear su middleware.
 10. Configurar controler para subir imagen. He instalar streamifier  npm i streamifier.
 
 11. creamos la tabla temporadas para poder poner precios distintos y que sea automatico con sus cotroladores y su ruta.
+
+12. Hacer una ruta para unir el calendario con el de Booking crear la uri, instalar ical npm i node-ical
 
 
 
