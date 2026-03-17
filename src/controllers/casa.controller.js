@@ -1,8 +1,10 @@
 import Casa from "../models/Casa.js";
+import Review from "../models/Review.js";
 
 export const getCasa = async (req, res) => {
   try {
     const casa = await Casa.findOne().lean();
+    const review = await Review.find().lean();
 
     if (!casa) {
       return res.status(404).json({ error: "Casa no encontrada" });
@@ -46,6 +48,7 @@ export const getCasa = async (req, res) => {
       temporadas: temporadasOrdenadas,
       precioActual,
       precioMostrado: precioActual ? precioActual.precio : precio,
+      review: review,
     });
   } catch (error) {
     res.status(500).json({ error: "Database error" });
