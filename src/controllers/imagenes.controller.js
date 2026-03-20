@@ -32,6 +32,7 @@ export const createImagen = async (req, res) => {
     const nuevaImagen = {
       url: result.secure_url,
       title,
+      description,
     };
 
     const casa = await Casa.findOneAndUpdate(
