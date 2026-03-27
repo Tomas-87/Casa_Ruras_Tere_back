@@ -39,17 +39,17 @@ const reservasEmail = async (req, res) => {
 
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
-      to: ["delivered@resend.dev"],
+      to: "tomascarrerasalbesa@gmail.com",
       subject: "Prueba reserva",
       text: `
-Nombre: ${nombre}
-Apellidos: ${apellidos}
-Email: ${email}
-Teléfono: ${telefono}
-Entrada: ${entrada}
-Salida: ${salida}
-Mensaje: ${mensaje?.trim() || "Sin mensaje"}
-`,
+        Nombre: ${nombre}
+        Apellidos: ${apellidos}
+        Email: ${email}
+        Teléfono: ${telefono}
+        Entrada: ${entrada}
+        Salida: ${salida}
+        Mensaje: ${mensaje?.trim() || "Sin mensaje"}
+        `,
     });
 
     console.log("RESEND DATA:", data);
