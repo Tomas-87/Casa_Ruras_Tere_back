@@ -23,45 +23,54 @@ const reservasEmail = async (req, res) => {
     if (new Date(salida) <= new Date(entrada)) {
       return res.status(400).json({
         ok: false,
-        message: "La fecha de salida debe ser posterior a la de la entrada",
+        message: "La fecha de salida debe ser posterior a la entrada",
       });
     }
 
     if (!email.includes("@")) {
       return res
         .status(400)
-        .json({ ok: false, message: "El email no es valido" });
+        .json({ ok: false, message: "El email no es válido" });
     }
 
     if (isNaN(telefono.trim()) || telefono.trim().length < 9) {
-      return res.status(400).json({ ok: false, message: "Telefono invalido" });
+      return res.status(400).json({ ok: false, message: "Teléfono inválido" });
     }
 
-    //enviar al correo el formulario////////////////////////////
-    await resend.emails.send({
-      from: "onboarding@resend.dev",
-      to: process.env.EMAIL_TO,
-      subject: "Nueva solicitud de reserva",
-      replyTo: email,
+    const { data, error } = await resend.emails.send({
+      from: "Acme <onboarding@resend.dev>",
+      to: ["delivered@resend.dev"],
+      subject: "Prueba reserva",
       text: `
-        Nombre: ${nombre}
-        Apellidos: ${apellidos}
-        Email: ${email}
-        Telefono: ${telefono}
-        Entrada: ${entrada}
-        Salida: ${salida}
-        Mensaje: ${mensaje?.trim() || "Sin mensaje"}
-        `,
+Nombre: ${nombre}
+Apellidos: ${apellidos}
+Email: ${email}
+Teléfono: ${telefono}
+Entrada: ${entrada}
+Salida: ${salida}
+Mensaje: ${mensaje?.trim() || "Sin mensaje"}
+`,
     });
-    ///////////////////////////////////////////////
-    return res
-      .status(200)
-      .json({ ok: true, message: "Correo enviado correctamente" });
+
+    console.log("RESEND DATA:", data);
+    console.log("RESEND ERROR:", error);
+
+    if (error) {
+      return res.status(500).json({
+        ok: false,
+        message: error.message || "Error de Resend",
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      message: "Correo enviado correctamente",
+    });
   } catch (error) {
     console.error("ERROR RESERVAS:", error);
     return res.status(500).json({
       ok: false,
-      message: "Error al enviar el correo",
+      message: error.message || "Error al enviar el correo",
     });
   }
 };
