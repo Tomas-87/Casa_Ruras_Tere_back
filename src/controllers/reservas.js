@@ -48,6 +48,9 @@ const reservasEmail = async (req, res) => {
 
     await transporter.verify();
     console.log("SMTP OK");
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
+    console.log("EMAIL_TO:", process.env.EMAIL_TO);
+    console.log("HAY PASS:", !!process.env.EMAIL_PASS);
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
