@@ -24,5 +24,14 @@ crear la configuaracion a cloudinary en config y crear su middleware.
 12. Hacer una ruta para unir el calendario con el de Booking crear la uri, instalar ical npm i node-ical
 
 
+13. crear el controlador y la ruta para hacer las reservas por email. instalar nodemailer npm i nodemailer para mandar el correo electrónico. Nodemailer se usa creando un transporter y luego llamando a sendMail().   añadimos nodemailer al controler para que lo envie sera asi  
+const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
 
 

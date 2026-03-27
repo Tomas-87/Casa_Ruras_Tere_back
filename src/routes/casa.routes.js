@@ -7,6 +7,7 @@ import getPriceNow, {
 import upload from "../middlewares/multer.js";
 import { getBookingCalendar } from "../controllers/booking.controller.js";
 import { getReview, createReview } from "../controllers/review.controller.js";
+import reservasEmail from "../controllers/reservas.js";
 
 const router = Router();
 
@@ -18,5 +19,7 @@ router.get("/temporadas", getTemporadas);
 router.get("/booking-calendar", getBookingCalendar);
 router.get("/review", getReview);
 router.post("/review", createReview);
+
+router.post("/reservas", reservasEmail);
 
 export default router;
