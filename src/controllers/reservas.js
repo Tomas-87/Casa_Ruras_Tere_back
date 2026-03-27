@@ -46,28 +46,32 @@ const reservasEmail = async (req, res) => {
       },
     });
 
+    await transporter.verify();
+    console.log("SMTP OK");
+
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_TO,
       subject: "Nueva solicitud de reserva",
       replyTo: email,
       text: `
-      Nombre: ${nombre}
-      Apellidos: ${apellidos}
-      Email: ${email}
-      Telefono: ${telefono}
-      Entrada: ${entrada}
-      Salida: ${salida}
-      Mensaje: ${mensaje?.trim() || "Sin mensaje"}
-      `,
+        Nombre: ${nombre}
+        Apellidos: ${apellidos}
+        Email: ${email}
+        Telefono: ${telefono}
+        Entrada: ${entrada}
+        Salida: ${salida}
+        Mensaje: ${mensaje?.trim() || "Sin mensaje"}
+        `,
     });
     ///////////////////////////////////////////////
     return res.status(200).json({ ok: true, message: "Datos recibidos" });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ ok: false, message: "Internal server Error" });
+    console.error("ERROR RESERVAS:", error);
+    return res.status(500).json({
+      ok: false,
+      message: "Error al enviar el correo",
+    });
   }
 };
 
