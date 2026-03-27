@@ -1,4 +1,6 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const reservasEmail = async (req, res) => {
   try {
@@ -36,24 +38,8 @@ const reservasEmail = async (req, res) => {
     }
 
     //enviar al correo el formulario////////////////////////////
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    await transporter.verify();
-    console.log("SMTP OK");
-    console.log("EMAIL_USER:", process.env.EMAIL_USER);
-    console.log("EMAIL_TO:", process.env.EMAIL_TO);
-    console.log("HAY PASS:", !!process.env.EMAIL_PASS);
-
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
       to: process.env.EMAIL_TO,
       subject: "Nueva solicitud de reserva",
       replyTo: email,
@@ -68,7 +54,9 @@ const reservasEmail = async (req, res) => {
         `,
     });
     ///////////////////////////////////////////////
-    return res.status(200).json({ ok: true, message: "Datos recibidos" });
+    return res
+      .status(200)
+      .json({ ok: true, message: "Correo enviado correctamente" });
   } catch (error) {
     console.error("ERROR RESERVAS:", error);
     return res.status(500).json({
