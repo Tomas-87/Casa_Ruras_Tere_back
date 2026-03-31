@@ -52,9 +52,6 @@ const reservasEmail = async (req, res) => {
         `,
     });
 
-    console.log("RESEND DATA:", data);
-    console.log("RESEND ERROR:", error);
-
     if (error) {
       return res.status(500).json({
         ok: false,

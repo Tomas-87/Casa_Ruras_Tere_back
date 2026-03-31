@@ -25,7 +25,7 @@ crear la configuaracion a cloudinary en config y crear su middleware.
 
 
 13. crear una cuenta en Resend para mandar el correo y conseguir la api. añadimos  la api en render.
+y creamos la conexion como nos dice resend.
 
 
-
-
+14. Instalamos swagger-ui-express swagger-jsdoc para hacer la documentacion. creamos la carpeta docs donde ira swagger y en config swagger config.
