@@ -25,3 +25,5 @@ export const getBookingCalendar = async (req, res) => {
     res.status(500).json({ error: "Error reading Booking calendar" });
   }
 };
+
+// no va a funcionar falta el ical de booking

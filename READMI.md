@@ -21,11 +21,11 @@ crear la configuaracion a cloudinary en config y crear su middleware.
 
 11. creamos la tabla temporadas para poder poner precios distintos y que sea automatico con sus cotroladores y su ruta.
 
-12. Hacer una ruta para unir el calendario con el de Booking crear la uri, instalar ical npm i node-ical
+12. Hacer una ruta para unir el calendario con el de Booking crear la uri, instalar ical npm i node-ical. Esto lo hemos dejado preparado pero no va a funcionar porque no tenemos la ical de booking.
 
 
 13. crear una cuenta en Resend para mandar el correo y conseguir la api. añadimos  la api en render.
 y creamos la conexion como nos dice resend.
 
 
-14. Instalamos swagger-ui-express swagger-jsdoc para hacer la documentacion. creamos la carpeta docs donde ira swagger y en config swagger config.
+14. Instalamos swagger-ui-express swagger-jsdoc para hacer la documentacion. creamos la carpeta docs donde ira swagger y en config swagger config. añadimos todas nuestras rutas get, post.
