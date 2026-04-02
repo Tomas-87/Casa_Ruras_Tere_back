@@ -1,7 +1,5 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const reservasEmail = async (req, res) => {
   try {
     const { nombre, apellidos, email, telefono, entrada, salida, mensaje } =
@@ -36,6 +34,8 @@ const reservasEmail = async (req, res) => {
     if (isNaN(telefono.trim()) || telefono.trim().length < 9) {
       return res.status(400).json({ ok: false, message: "Teléfono inválido" });
     }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",

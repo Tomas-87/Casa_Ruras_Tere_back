@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "cloudinary": "^2.9.0",
@@ -23,7 +23,10 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "jest": "^30.3.0",
+    "mongodb-memory-server": "^11.0.1",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
   },
   "keywords": [],
   "author": "Tomás Carreras Albesa",
